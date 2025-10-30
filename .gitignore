@@ -1,1 +1,34 @@
+# Node modules
 node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+driver-logs/
+
+# Reports
+reports/
+
+# Screenshots
+screenshots/
+errorShots/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Test results
+test-results/
+junit-reports/
+
+# Coverage
+coverage/
+
+# Environment
+.env
+.env.local

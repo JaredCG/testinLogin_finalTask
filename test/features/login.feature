@@ -1,18 +1,42 @@
-Feature: SauceDemo Login
+Feature: SauceDemo Login Functionality
+  As a user of SauceDemo
+  I want to test the login functionality
+  So that I can ensure proper validation and access control
 
-  Scenario: UC-1 Login with empty credentials
+  Background:
     Given I open the SauceDemo login page
-    When I click the Login button
+
+  @UC-1 @regression
+  Scenario: UC-1 Test Login form with empty credentials
+    When I click the Login button without entering credentials
     Then I should see the error message "Username is required"
 
-  Scenario: UC-2 Login with missing password
-    Given I open the SauceDemo login page
+  @UC-2 @regression
+  Scenario: UC-2 Test Login form with credentials by passing Username
     When I enter "standard_user" in the Username field
+    And I enter "secret_sauce" in the Password field
+    And I clear the Password field
     And I click the Login button
     Then I should see the error message "Password is required"
 
-  Scenario: UC-3 Login with valid credentials
-    Given I open the SauceDemo login page
-    When I enter valid credentials
+  @UC-3 @smoke @regression
+  Scenario: UC-3 Test Login form with credentials by passing Username & Password
+    When I enter credentials from accepted username sections
+      | username      | password     |
+      | standard_user | secret_sauce |
     And I click the Login button
     Then I should see the dashboard with title "Swag Labs"
+    And the page URL should contain "inventory.html"
+
+  @UC-3-alternative @regression
+  Scenario Outline: UC-3 Login with various valid credentials
+    When I enter "<username>" in the Username field
+    And I enter "<password>" in the Password field
+    And I click the Login button
+    Then I should see the dashboard with title "Swag Labs"
+
+    Examples:
+      | username                | password     |
+      | standard_user           | secret_sauce |
+      | problem_user            | secret_sauce |
+      | performance_glitch_user | secret_sauce |

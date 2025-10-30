@@ -1,34 +1,109 @@
-export const config = {
+exports.config = {
     runner: 'local',
-    specs: ['./test/features/**/*.feature'],
-    maxInstances: 3,
+    
+    specs: [
+        './test/features/**/*.feature'
+    ],
+    
+    exclude: [],
+    
+    maxInstances: 1,
 
     capabilities: [
         {
+            maxInstances: 1,
             browserName: 'chrome',
-            'goog:chromeOptions': { args: ['--headless', '--disable-gpu'] }
+            acceptInsecureCerts: true,
+            'goog:chromeOptions': {
+                args: [
+                    '--disable-gpu',
+                    '--window-size=1920,1080',
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage'
+                ]
+            }
         },
         {
+            maxInstances: 1,
             browserName: 'firefox',
-            'moz:firefoxOptions': { args: ['-headless'] }
+            acceptInsecureCerts: true,
+            'moz:firefoxOptions': {
+                args: [
+                    '--disable-gpu',
+                    '--window-size=1920,1080',
+                    '--no-sandbox',
+                    '--disable-dev-shm-usage'
+                ]
+            }
         },
-        {
+        /* {
+            maxInstances: 1,
             browserName: 'MicrosoftEdge',
-            'moz:MicrosoftEdgeOptions': { args: ['-headless'] }
-        }
+            acceptInsecureCerts: true,
+            'ms:edgeOptions': {
+                args: [
+                    '--disable-gpu',
+                    '--window-size=1920,1080',
+                    '--no-sandbox'
+                ]
+            }
+        } */
     ],
-
+    
     logLevel: 'info',
+    bail: 0,
     baseUrl: 'https://www.saucedemo.com',
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-
+    
+    services: [
+        ['chromedriver', {
+            logFileName: 'wdio-chromedriver.log',
+            outputDir: 'driver-logs'
+        }],
+        ['geckodriver', {
+            logFileName: 'wdio-geckodriver.log',
+            outputDir: 'driver-logs'
+        }],
+        /* ['edgedriver', {
+            logFileName: 'wdio-edgedriver.log',
+            outputDir: 'driver-logs'
+        }] */
+    ],
+    
     framework: 'cucumber',
+    
     reporters: ['spec'],
 
     cucumberOpts: {
         require: ['./test/step-definitions/**/*.js'],
-        timeout: 60000
+        backtrace: false,
+        requireModule: [],
+        dryRun: false,
+        failFast: false,
+        format: ['pretty'],
+        snippets: true,
+        source: true,
+        profile: [],
+        strict: false,
+        tagExpression: '',
+        timeout: 60000,
+        ignoreUndefinedDefinitions: false
+    },
+
+    before: function (capabilities, specs) {
+        browser.setTimeout({ 'implicit': 5000 });
+        browser.maximizeWindow();
+    },
+
+    afterStep: async function (step, scenario, { error, duration, passed }, context) {
+        if (error) {
+            await browser.takeScreenshot();
+        }
+    },
+
+    after: function (result, capabilities, specs) {
+        // Cleanup después de cada test
     }
-};
+}
