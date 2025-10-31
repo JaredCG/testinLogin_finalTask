@@ -1,7 +1,5 @@
 class DashboardPage {
-    /**
-     * Selectors for dashboard page elements
-     */
+    //Selectors for dashboard page elements
     get title() { 
         return $('.app_logo'); 
     }
@@ -26,39 +24,44 @@ class DashboardPage {
         return $('#react-burger-menu-btn');
     }
 
-    /**
-     * Wait for dashboard to load
-     */
-    waitForPageLoad() {
-        this.inventoryContainer.waitForDisplayed({ 
+    //Wait for dashboard to load
+    async waitForPageLoad() {
+        await this.inventoryContainer.waitForDisplayed({ 
             timeout: 10000,
             timeoutMsg: 'Dashboard did not load properly'
         });
+        await this.title.waitForDisplayed({ 
+            timeout: 10000,
+            timeoutMsg: 'Dashboard title did not appear'
+         });
+    
+        // Pausa adicional de seguridad
+        await browser.pause(1000);
     }
 
     /**
      * Get header/title text
      * @returns {string} Title text
      */
-    getHeaderText() {
-        this.title.waitForDisplayed({ timeout: 5000 });
-        return this.title.getText();
+    async getHeaderText() {
+        await this.title.waitForDisplayed({ timeout: 5000 });
+        return await this.title.getText();
     }
 
     /**
      * Check if dashboard is displayed
      * @returns {boolean}
      */
-    isDashboardDisplayed() {
-        return this.inventoryContainer.isDisplayed();
+    async isDashboardDisplayed() {
+        return await this.inventoryContainer.isDisplayed();
     }
 
     /**
      * Get current page URL
      * @returns {string} Current URL
      */
-    getCurrentUrl() {
-        return browser.getUrl();
+    async getCurrentUrl() {
+        return await browser.getUrl();
     }
 
     /**

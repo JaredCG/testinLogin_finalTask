@@ -1,11 +1,5 @@
-/**
- * Login Page Object Model
- * Implements POM pattern for SauceDemo login page
- */
 class LoginPage {
-    /**
-     * Selectors for login page elements
-     */
+    //Selectors for login page elements
     get inputUsername() { 
         return $('#user-name'); 
     }
@@ -30,9 +24,7 @@ class LoginPage {
         return $('.login_container');
     }
 
-    /**
-     * Navigate to login page
-     */
+    //Navigate to login page
     open() {
         browser.url('/');
         browser.waitUntil(() => this.loginContainer.isDisplayed(), {
@@ -51,23 +43,11 @@ class LoginPage {
             this.inputUsername.waitForDisplayed({ timeout: 5000 });
             this.inputUsername.clearValue(); // Limpiar primero
             this.inputUsername.setValue(username);
-            
-            // Verificar que el valor se estableció correctamente
-            const actualUsername = this.inputUsername.getValue();
-            if (actualUsername !== username) {
-                console.warn(`Username no coincide. Esperado: ${username}, Actual: ${actualUsername}`);
-            }
         }
         if (password) {
             this.inputPassword.waitForDisplayed({ timeout: 5000 });
             this.inputPassword.clearValue(); // Limpiar primero
             this.inputPassword.setValue(password);
-            
-            // Verificar que el valor se estableció correctamente
-            const actualPassword = this.inputPassword.getValue();
-            if (actualPassword !== password) {
-                console.warn(`Password no coincide. Esperado: ${password}, Actual: ${actualPassword}`);
-            }
         }
         
         // Pequeña pausa para asegurar que los valores están listos
@@ -80,6 +60,7 @@ class LoginPage {
     clickLogin() {
         this.btnLogin.waitForClickable({ timeout: 5000 });
         this.btnLogin.click();
+        browser.pause(1000);
     }
 
     /**
@@ -88,6 +69,9 @@ class LoginPage {
     clearUsername() {
         this.inputUsername.waitForDisplayed({ timeout: 5000 });
         this.inputUsername.clearValue();
+        /* this.inputUsername.click();
+        browser.keys(['Control', 'a']); // Seleccionar todo (Cmd+a en Mac)
+        browser.keys('Backspace'); */
     }
 
     /**
@@ -96,6 +80,9 @@ class LoginPage {
     clearPassword() {
         this.inputPassword.waitForDisplayed({ timeout: 5000 });
         this.inputPassword.clearValue();
+        /* this.inputPassword.click();
+        browser.keys(['Control', 'a']); // Seleccionar todo
+        browser.keys('Backspace'); */
     }
 
     /**
@@ -115,5 +102,4 @@ class LoginPage {
         return this.errorMsg.isDisplayed();
     }
 }
-
 module.exports = new LoginPage();
