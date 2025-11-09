@@ -11,22 +11,17 @@ Given(/^I open the SauceDemo login page$/, () => {
 // WHEN Steps
 //UC-1
 When(/^I enter "([^"]*)" in the Username field$/, (username) => {
+    /* LoginPage.inputUsername.waitForDisplayed({ timeout: 5000 });
+    LoginPage.inputUsername.click();
+    browser.pause(200); */
     LoginPage.inputUsername.setValue(username);
 });
 
 When(/^I enter "([^"]*)" in the Password field$/, (password) => {
+    /* LoginPage.inputPassword.waitForDisplayed({ timeout: 5000 });
+    LoginPage.inputPassword.click();
+    browser.pause(200); */
     LoginPage.inputPassword.setValue(password);
-});
-
-When(/^I clear the Username field$/, () => {
-    LoginPage.clearUsername();
-    //Verificar que el campo se limpió
-    browser.pause(300);
-    const value = LoginPage.inputUsername.getValue();
-    if (value !== '') {
-        console.warn('⚠️ Username no se limpió completamente');
-        LoginPage.inputUsername.clearValue();
-    }
 });
 
 When(/^I clear the Password field$/, () => {
@@ -35,14 +30,24 @@ When(/^I clear the Password field$/, () => {
     browser.pause(300);
     const value = LoginPage.inputPassword.getValue();
     if (value !== '') {
-        console.warn('⚠️ Password no se limpió completamente');
+        console.warn('***** Password no se limpió completamente *****');
         LoginPage.inputPassword.clearValue();
     }
 });
 
-/**
- * UC-1: Clear both username and password fields
- */
+When(/^I clear the Username field$/, () => {
+    LoginPage.clearUsername();
+    //Verificar que el campo se limpió
+    browser.pause(300);
+    const value = LoginPage.inputUsername.getValue();
+    if (value !== '') {
+        console.warn('***** Username no se limpió completamente *****');
+        LoginPage.inputUsername.clearValue();
+    }
+});
+
+
+//UC-1: Clear both username and password fields
 /* When(/^I clear the inputs$/, () => {
     LoginPage.clearUsername();
     LoginPage.clearPassword();
@@ -51,7 +56,6 @@ When(/^I clear the Password field$/, () => {
 When(/^I click the Login button$/, () => {
     LoginPage.clickLogin();
 });
-
 
 //UC-3
 When(/^I enter valid credentials$/, () => {
@@ -104,15 +108,6 @@ Then(/^I should see the dashboard with title "([^"]*)"$/, async (expectedTitle) 
     // Obtener el texto y validar
     const actualTitle = await DashboardPage.title.getText();
     expect(actualTitle).toEqual(expectedTitle);
-    
-   /*  console.log('✅ URL correcta: inventory.html');
-    
-    // Ahora esperar por el título con un selector más robusto
-    const titleElement = await $('.app_logo');
-    await titleElement.waitForDisplayed({ 
-        timeout: 15000,
-        timeoutMsg: 'El elemento .app_logo no apareció en el dashboard'
-    }); */
 });
 
 Then(/^the page URL should contain "([^"]*)"$/, async (urlPart) => {

@@ -41,48 +41,66 @@ class LoginPage {
     login(username, password) {
         if (username) {
             this.inputUsername.waitForDisplayed({ timeout: 5000 });
-            this.inputUsername.clearValue(); // Limpiar primero
+            this.inputUsername.clearValue();
             this.inputUsername.setValue(username);
         }
         if (password) {
             this.inputPassword.waitForDisplayed({ timeout: 5000 });
-            this.inputPassword.clearValue(); // Limpiar primero
+            this.inputPassword.clearValue();
             this.inputPassword.setValue(password);
         }
         
-        // Pequeña pausa para asegurar que los valores están listos
+        //Pausa para asegurar que los valores están listos
         browser.pause(500);
     }
 
-    /**
-     * Click login button
-     */
+    //Click login button
     clickLogin() {
         this.btnLogin.waitForClickable({ timeout: 5000 });
         this.btnLogin.click();
         browser.pause(1000);
     }
 
-    /**
-     * Clear username field
-     */
+    //Clear username field
     clearUsername() {
         this.inputUsername.waitForDisplayed({ timeout: 5000 });
+        this.inputUsername.click();
+        browser.pause(200);
         this.inputUsername.clearValue();
-        /* this.inputUsername.click();
-        browser.keys(['Control', 'a']); // Seleccionar todo (Cmd+a en Mac)
-        browser.keys('Backspace'); */
+        browser.pause(200);
+        
+        let usernameValue = this.inputUsername.getValue();
+        if (usernameValue !== '') {
+            //Método alternativo si clearValue() falla: simular teclas            
+            this.inputUsername.click();
+            browser.keys(['Control', 'a']);
+            browser.keys('Backspace');//o Delete?
+            browser.pause(100);
+        }
     }
 
-    /**
-     * Clear password field
-     */
+    //Clear password field
     clearPassword() {
         this.inputPassword.waitForDisplayed({ timeout: 5000 });
+        this.inputPassword.click();
+        browser.pause(200);
         this.inputPassword.clearValue();
-        /* this.inputPassword.click();
-        browser.keys(['Control', 'a']); // Seleccionar todo
-        browser.keys('Backspace'); */
+        browser.pause(200);
+
+        let passwordValue = this.inputPassword.getValue();
+        if (passwordValue !== '') {
+            //Método alternativo si clearValue() falla: simular teclas
+            this.inputPassword.click();
+            browser.keys(['Control', 'a']);
+            browser.keys('Backspace');
+            browser.pause(100);
+            
+            // Verificar nuevamente
+            /* passwordValue = this.inputPassword.getValue();
+            if (passwordValue !== '') {
+                console.warn('***** Password field could not be cleared completely *****');
+            } */
+        }
     }
 
     /**
