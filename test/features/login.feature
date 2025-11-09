@@ -12,7 +12,6 @@ Feature: SauceDemo Login Functionality
     And I enter "secret_sauce" in the Password field
     And I clear the Username field
     And I clear the Password field
-    #And I clear the inputs
     And I click the Login button
     Then I should see the error message "Username is required"
 

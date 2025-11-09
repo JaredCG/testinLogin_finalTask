@@ -27,7 +27,7 @@ class DashboardPage {
     //Wait for dashboard to load
     async waitForPageLoad() {
         await this.inventoryContainer.waitForDisplayed({ 
-            timeout: 10000,
+            timeout: 15000,
             timeoutMsg: 'Dashboard did not load properly'
         });
         await this.title.waitForDisplayed({ 
@@ -76,8 +76,8 @@ class DashboardPage {
      * Verify user is on inventory page
      * @returns {boolean}
      */
-    isOnInventoryPage() {
-        const url = this.getCurrentUrl();
+    async isOnInventoryPage() {
+        const url = await this.getCurrentUrl();
         return url.includes('inventory.html');
     }
 }

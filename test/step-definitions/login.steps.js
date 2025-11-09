@@ -18,6 +18,28 @@ When(/^I enter "([^"]*)" in the Password field$/, (password) => {
     LoginPage.inputPassword.setValue(password);
 });
 
+When(/^I clear the Username field$/, () => {
+    LoginPage.clearUsername();
+    //Verificar que el campo se limpió
+    browser.pause(300);
+    const value = LoginPage.inputUsername.getValue();
+    if (value !== '') {
+        console.warn('⚠️ Username no se limpió completamente');
+        LoginPage.inputUsername.clearValue();
+    }
+});
+
+When(/^I clear the Password field$/, () => {
+    LoginPage.clearPassword();
+    // Verificar que el campo se limpió
+    browser.pause(300);
+    const value = LoginPage.inputPassword.getValue();
+    if (value !== '') {
+        console.warn('⚠️ Password no se limpió completamente');
+        LoginPage.inputPassword.clearValue();
+    }
+});
+
 /**
  * UC-1: Clear both username and password fields
  */
@@ -30,13 +52,7 @@ When(/^I click the Login button$/, () => {
     LoginPage.clickLogin();
 });
 
-When(/^I clear the Password field$/, () => {
-    LoginPage.clearPassword();
-});
 
-When(/^I clear the Username field$/, () => {
-    LoginPage.clearUsername();
-});
 //UC-3
 When(/^I enter valid credentials$/, () => {
     const { username, password } = testData.validUser;
@@ -68,13 +84,6 @@ Then(/^I should see the error message "([^"]*)"$/, async (expectedMessage) => {
 });
 //UC-3
 Then(/^I should see the dashboard with title "([^"]*)"$/, async (expectedTitle) => {
-    // Esperar a que la página cargue completamente
-    DashboardPage.waitForPageLoad();    
-    // Esperar explícitamente por el elemento del título
-    await DashboardPage.title.waitForDisplayed({ timeout: 10000 });    
-    // Obtener el texto y validar
-    const actualTitle = await DashboardPage.title.getText();
-    expect(actualTitle).toEqual(expectedTitle);
     // Primero verificar que la URL cambió
     await browser.waitUntil(
         async () => {
@@ -87,15 +96,23 @@ Then(/^I should see the dashboard with title "([^"]*)"$/, async (expectedTitle) 
             timeoutMsg: 'La URL no cambió a inventory.html - el login puede haber fallado'
         }
     );
+
+    // Esperar a que la página cargue completamente
+    await DashboardPage.waitForPageLoad();    
+    // Esperar explícitamente por el elemento del título
+    await DashboardPage.title.waitForDisplayed({ timeout: 10000 });    
+    // Obtener el texto y validar
+    const actualTitle = await DashboardPage.title.getText();
+    expect(actualTitle).toEqual(expectedTitle);
     
-    console.log('✅ URL correcta: inventory.html');
+   /*  console.log('✅ URL correcta: inventory.html');
     
     // Ahora esperar por el título con un selector más robusto
     const titleElement = await $('.app_logo');
     await titleElement.waitForDisplayed({ 
         timeout: 15000,
         timeoutMsg: 'El elemento .app_logo no apareció en el dashboard'
-    });
+    }); */
 });
 
 Then(/^the page URL should contain "([^"]*)"$/, async (urlPart) => {

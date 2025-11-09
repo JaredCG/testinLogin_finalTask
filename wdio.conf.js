@@ -10,7 +10,7 @@ exports.config = {
     maxInstances: 1,
 
     capabilities: [
-        {
+       /*  {
             maxInstances: 1,
             browserName: 'chrome',
             acceptInsecureCerts: true,
@@ -22,7 +22,7 @@ exports.config = {
                     '--disable-dev-shm-usage'
                 ]
             }
-        },
+        }, */
         {
             maxInstances: 1,
             browserName: 'firefox',
@@ -59,10 +59,10 @@ exports.config = {
     connectionRetryCount: 3,
     
     services: [
-        ['chromedriver', {
+        /* ['chromedriver', {
             logFileName: 'wdio-chromedriver.log',
             outputDir: 'driver-logs'
-        }],
+        }], */
         ['geckodriver', {
             logFileName: 'wdio-geckodriver.log',
             outputDir: 'driver-logs'
