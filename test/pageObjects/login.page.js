@@ -81,6 +81,8 @@ class LoginPage {
 
     //Clear password field
     clearPassword() {
+        const saveUsername = this.inputUsername.getValue();
+        console.log('***** Saved username for restore: *****', saveUsername);
         this.inputPassword.waitForDisplayed({ timeout: 5000 });
         this.inputPassword.click();
         browser.pause(200);
@@ -98,8 +100,17 @@ class LoginPage {
             // Verificar nuevamente
             /* passwordValue = this.inputPassword.getValue();
             if (passwordValue !== '') {
-                console.warn('***** Password field could not be cleared completely *****');
+                console.warn('***** Password no se limpió completamente *****');
             } */
+        }
+        const actualUsername = this.inputUsername.getValue();
+        console.log('***** Actual username after clearing password: *****', actualUsername);
+        if (actualUsername !== saveUsername && saveUsername !== '') {
+            console.warn('***** Username diferente *****');
+            this.inputUsername.click();
+            this.inputUsername.clearValue();
+            this.inputUsername.setValue(saveUsername);
+            browser.pause(300);
         }
     }
 

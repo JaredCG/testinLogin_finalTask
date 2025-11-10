@@ -1,7 +1,7 @@
 {
   "name": "testinglogin_finaltask",
   "version": "1.0.0",
-  "description": "Automated Testing using WebdriverIO, Mocha, Cucumber with POM and BDD",
+  "description": "Automated Testing using WebdriverIO, Cucumber with POM and BDD",
   "main": "index.js",
   "scripts": {
     "test": "wdio run ./wdio.conf.js",

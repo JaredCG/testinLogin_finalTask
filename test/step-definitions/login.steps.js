@@ -14,6 +14,7 @@ When(/^I enter "([^"]*)" in the Username field$/, (username) => {
     /* LoginPage.inputUsername.waitForDisplayed({ timeout: 5000 });
     LoginPage.inputUsername.click();
     browser.pause(200); */
+    LoginPage.inputUsername.click();
     LoginPage.inputUsername.setValue(username);
 });
 
@@ -26,7 +27,7 @@ When(/^I enter "([^"]*)" in the Password field$/, (password) => {
 
 When(/^I clear the Password field$/, () => {
     LoginPage.clearPassword();
-    // Verificar que el campo se limpió
+    //Verificar que el campo se limpió
     browser.pause(300);
     const value = LoginPage.inputPassword.getValue();
     if (value !== '') {
@@ -66,21 +67,21 @@ When(/^I enter valid credentials$/, () => {
 When(/^I enter credentials from accepted username sections$/, (dataTable) => {
     const credentials = dataTable.hashes()[0];
     
-    // Ingresar username
+    //Ingresar username
     LoginPage.inputUsername.waitForDisplayed({ timeout: 5000 });
     LoginPage.inputUsername.clearValue();
     LoginPage.inputUsername.setValue(credentials.username);
     
-    // Ingresar password
+    //Ingresar password
     LoginPage.inputPassword.waitForDisplayed({ timeout: 5000 });
     LoginPage.inputPassword.clearValue();
     LoginPage.inputPassword.setValue(credentials.password);
     
-    // Pausa pequeña para asegurar que se ingresaron los valores
+    //Pausa pequeña para asegurar que se ingresaron los valores
     browser.pause(500);
 });
 
-// THEN Steps
+//THEN Steps
 //UC-1 | UC-2
 Then(/^I should see the error message "([^"]*)"$/, async (expectedMessage) => {
     await expect(LoginPage.errorMsg).toBeDisplayed();
@@ -101,30 +102,30 @@ Then(/^I should see the dashboard with title "([^"]*)"$/, async (expectedTitle) 
         }
     );
 
-    // Esperar a que la página cargue completamente
+    //Wait to page to load
     await DashboardPage.waitForPageLoad();    
-    // Esperar explícitamente por el elemento del título
-    await DashboardPage.title.waitForDisplayed({ timeout: 10000 });    
-    // Obtener el texto y validar
+    //Esperar explícitamente por el elemento del título
+    await DashboardPage.title.waitForDisplayed({ timeout: 5000 });    
+    //Get text and validate
     const actualTitle = await DashboardPage.title.getText();
     expect(actualTitle).toEqual(expectedTitle);
 });
 
 Then(/^the page URL should contain "([^"]*)"$/, async (urlPart) => {
-    // Esperar hasta que la URL cambie y contenga la parte esperada
+    //Esperar hasta que la URL cambie y contenga la parte esperada
     await browser.waitUntil(
-        async () => (await browser.getUrl()).includes(urlPart),
-        /* async () => {
+        //async () => (await browser.getUrl()).includes(urlPart),
+        async () => {
             const currentUrl = await browser.getUrl();
             return currentUrl.includes(urlPart);
-        }, */
+        },
         {
             timeout: 15000,
             timeoutMsg: `Expected URL to contain "${urlPart}"`
         }
     );
     
-    // Verificación adicional
+    //Extra check
     const currentUrl = await browser.getUrl();
     expect(currentUrl).toContain(urlPart);
 });

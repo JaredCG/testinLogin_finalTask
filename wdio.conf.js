@@ -105,6 +105,6 @@ exports.config = {
     },
 
     after: function (result, capabilities, specs) {
-        // Cleanup después de cada test
+        //Cleanup después de cada test
     }
 }
